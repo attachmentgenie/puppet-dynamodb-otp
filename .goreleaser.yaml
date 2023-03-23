@@ -1,0 +1,39 @@
+before:
+  hooks:
+    - go mod download
+archives:
+  - format: binary
+builds:
+  - id: darwin
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - arm64
+  - id: linux
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+nfpms:
+  - id: linux
+    builds:
+      - linux
+    formats:
+      - deb
+    maintainer: infra@seaplane.io
+release:
+  prerelease: auto
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
