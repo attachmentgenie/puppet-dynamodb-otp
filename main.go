@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/seaplane-io/fleet-autosign-otp/internal/cmd"
+	"github.com/attachmentgenie/puppet-dynamodb-otp/internal/cmd"
 )
 
 func main() {

@@ -17,7 +17,7 @@ type Item struct {
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "fleet-autosign-otp",
+	Use:   "puppet-dynamodb-otp",
 	Short: "Validate puppet client CSRs.",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:

@@ -1,4 +1,4 @@
-module github.com/seaplane-io/fleet-autosign-otp
+module github.com/attachmentgenie/puppet-dynamodb-otp
 
 go 1.20
 

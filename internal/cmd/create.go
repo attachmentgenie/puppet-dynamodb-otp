@@ -43,7 +43,7 @@ var createCmd = &cobra.Command{
 		}
 		svc := dynamodb.NewFromConfig(cfg)
 		_, err = svc.PutItem(context.TODO(), &dynamodb.PutItemInput{
-			TableName: aws.String("fleet-autosign-otp"),
+			TableName: aws.String("puppet-dynamodb-otp"),
 			Item: map[string]types.AttributeValue{
 				"expire_at_unix": &types.AttributeValueMemberN{Value: strconv.FormatInt(expire_at_unix, 10)},
 				"fqdn":           &types.AttributeValueMemberS{Value: fqdn},

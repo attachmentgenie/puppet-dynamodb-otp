@@ -36,7 +36,7 @@ var validateCsrCmd = &cobra.Command{
 		args = fixArgs(args)
 
 		fqdn := args[0]
-		tableName := "fleet-autosign-otp"
+		tableName := "puppet-dynamodb-otp"
 
 		cfg, err := config.LoadDefaultConfig(context.TODO(), func(opts *config.LoadOptions) error {
 			return nil

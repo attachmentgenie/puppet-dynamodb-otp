@@ -37,7 +37,7 @@ var deleteCmd = &cobra.Command{
 		}
 		svc := dynamodb.NewFromConfig(cfg)
 		_, err = svc.DeleteItem(context.TODO(), &dynamodb.DeleteItemInput{
-			TableName: aws.String("fleet-autosign-otp"),
+			TableName: aws.String("puppet-dynamodb-otp"),
 			Key: map[string]types.AttributeValue{
 				"fqdn": &types.AttributeValueMemberS{Value: fqdn},
 			},

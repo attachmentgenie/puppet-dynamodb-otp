@@ -24,7 +24,9 @@ nfpms:
       - linux
     formats:
       - deb
-    maintainer: infra@seaplane.io
+    maintainer: bram@attachmentgenie.com
+sboms:
+  - artifacts: archive
 release:
   prerelease: auto
 checksum:

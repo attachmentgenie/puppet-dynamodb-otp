@@ -41,7 +41,7 @@ var listCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		tableName := "fleet-autosign-otp"
+		tableName := "puppet-dynamodb-otp"
 
 		t := table.NewWriter()
 		t.SetOutputMirror(os.Stdout)
