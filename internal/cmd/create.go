@@ -35,9 +35,7 @@ var createCmd = &cobra.Command{
 		expire_at_unix := time.Now().Unix() + int64(ttl)
 		otp_token := randstr.Hex(16)
 
-		cfg, err := config.LoadDefaultConfig(context.TODO(), func(opts *config.LoadOptions) error {
-			return nil
-		})
+		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
 		if err != nil {
 			panic(err)
 		}

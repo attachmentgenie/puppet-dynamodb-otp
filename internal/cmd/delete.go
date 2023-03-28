@@ -29,9 +29,7 @@ var deleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fqdn := args[0]
 
-		cfg, err := config.LoadDefaultConfig(context.TODO(), func(opts *config.LoadOptions) error {
-			return nil
-		})
+		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
 		if err != nil {
 			panic(err)
 		}

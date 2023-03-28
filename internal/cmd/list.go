@@ -47,9 +47,7 @@ var listCmd = &cobra.Command{
 		t.SetOutputMirror(os.Stdout)
 		t.AppendHeader(table.Row{"FQDN", "Expires at", "OTP token"})
 
-		cfg, err := config.LoadDefaultConfig(context.TODO(), func(opts *config.LoadOptions) error {
-			return nil
-		})
+		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
 		if err != nil {
 			panic(err)
 		}
