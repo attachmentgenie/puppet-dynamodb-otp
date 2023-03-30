@@ -14,7 +14,7 @@ import (
 
 // deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
-	Use:   "delete",
+	Use:   "delete FQDN",
 	Short: "Delete an OTP token.",
 	Long:  "Delete an OTP token for use in puppet auto signing ceremony.",
 	Args: func(cmd *cobra.Command, args []string) error {

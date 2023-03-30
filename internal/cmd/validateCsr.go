@@ -16,7 +16,7 @@ import (
 
 // validateCsrCmd represents the validateCsr command
 var validateCsrCmd = &cobra.Command{
-	Use:   "validate-csr",
+	Use:   "validate-csr FQDN",
 	Short: "Validate puppet certificate signing request.",
 	Long:  "Validate puppet certificate signing request in puppet auto signing ceremony.",
 	Args: func(cmd *cobra.Command, args []string) error {
@@ -73,7 +73,7 @@ func init() {
 // The puppet autosign config doesnt't allow for subcommands being specified
 // we need to undo the trick we setup in rootCmd
 func fixArgs(args []string) []string {
-	if args[0] == "validate" {
+	if len(args) > 0 && args[0] == "validate-csr" {
 		args = args[1:]
 	}
 	return args

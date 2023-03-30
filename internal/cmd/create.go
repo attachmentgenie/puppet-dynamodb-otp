@@ -17,7 +17,7 @@ import (
 
 // createCmd represents the create command
 var createCmd = &cobra.Command{
-	Use:   "create",
+	Use:   "create FQDN [flags]",
 	Short: "Create an OTP token.",
 	Long:  "Create an OTP token for use in puppet auto signing ceremony.",
 	Args: func(cmd *cobra.Command, args []string) error {

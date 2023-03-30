@@ -25,7 +25,7 @@ type otp_token struct {
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "list",
+	Use:   "list [FQDN]",
 	Short: "List active OTP token(s).",
 	Long:  "List active OTP token(s) for use in puppet auto signing ceremony.",
 	Args: func(cmd *cobra.Command, args []string) error {

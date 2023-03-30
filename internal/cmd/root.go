@@ -19,13 +19,8 @@ type Item struct {
 var rootCmd = &cobra.Command{
 	Use:   "puppet-dynamodb-otp",
 	Short: "Validate puppet client CSRs.",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(1),
+	Long:  `Manipulate OTP tokens for use in puppet auto signing ceremony.`,
+	Args:  cobra.ExactArgs(1),
 }
 
 func Execute(defCmd string) {
@@ -34,7 +29,7 @@ func Execute(defCmd string) {
 	// The puppet autosign config doesnt't allow for subcommands being specified
 	// so we ll forward the command ourselves
 	cmd, _, err := rootCmd.Find(os.Args[1:])
-	if err == nil && cmd.Use == rootCmd.Use && cmd.Flags().Parse(os.Args[1:]) != pflag.ErrHelp {
+	if len(os.Args[1:]) == 1 && err == nil && cmd.Use == rootCmd.Use && cmd.Flags().Parse(os.Args[1:]) != pflag.ErrHelp {
 		args := append([]string{defCmd}, os.Args[1:]...)
 		rootCmd.SetArgs(args)
 	}
