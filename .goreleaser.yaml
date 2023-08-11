@@ -2,7 +2,26 @@ before:
   hooks:
     - go mod download
 archives:
-  - format: binary
+  - id: darwin
+    builds:
+    - darwin
+    format: zip
+  - id: linux
+    builds:
+    - linux
+    format: zip
+  - id: windows
+    builds:
+      - windows
+    format: zip
+brews:
+  - ids:
+      - darwin
+    install: |
+      bin.install "{{.ProjectName}}"
+    repository:
+      owner: attachmentgenie
+      name: homebrew-tap
 builds:
   - id: darwin
     env:
@@ -10,6 +29,7 @@ builds:
     goos:
       - darwin
     goarch:
+      - amd64
       - arm64
   - id: linux
     env:
@@ -18,15 +38,56 @@ builds:
       - linux
     goarch:
       - amd64
+      - arm
+      - arm64
+    goarm:
+      - 7
+  - id: windows
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - windows
+    goarch:
+      - amd64
+dockers:
+  - image_templates:
+      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-amd64"
+    use: buildx
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--label=org.opencontainers.image.source https://github.com/attachmentgenie/{{.ProjectName}}"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/amd64"
+  - image_templates:
+      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-arm64v7"
+    use: buildx
+    goarch: arm64
+    goarm: "7"
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--label=org.opencontainers.image.source https://github.com/attachmentgenie/{{.ProjectName}}"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/arm64/v7"
+docker_manifests:
+  - name_template: "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}"
+    image_templates:
+      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-amd64"
+      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-arm64v7"
 nfpms:
-  - id: linux
+  - id: darwin
+    maintainer: 'bram vogelaar <bram@attachmentgenie.com>'
+    package_name: "{{.ProjectName}}"
     builds:
       - linux
     formats:
       - deb
-    maintainer: bram@attachmentgenie.com
-sboms:
-  - artifacts: archive
+      - rpm
 release:
   prerelease: auto
 checksum:
