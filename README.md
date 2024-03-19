@@ -1,4 +1,4 @@
-# golang-example
+# puppet-dynamodb-otp
 
 ![goreleaser](https://github.com/attachmentgenie/puppet-dynamodb-otp/workflows/goreleaser/badge.svg)
 
