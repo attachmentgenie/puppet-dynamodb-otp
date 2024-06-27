@@ -1,3 +1,4 @@
+version: 2
 before:
   hooks:
     - go mod download
@@ -17,7 +18,7 @@ archives:
 brews:
   - ids:
       - darwin
-    folder: Formula
+    directory: Formula
     install: |
       bin.install "{{.ProjectName}}"
     repository:

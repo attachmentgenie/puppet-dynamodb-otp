@@ -15,8 +15,8 @@ type Item struct {
 	Rating float64
 }
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
+// RootCmd represents the base command when called without any subcommands
+var RootCmd = &cobra.Command{
 	Use:   "puppet-dynamodb-otp",
 	Short: "Validate puppet client CSRs.",
 	Long:  `Manipulate OTP tokens for use in puppet auto signing ceremony.`,
@@ -24,17 +24,13 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute(defCmd string) {
-	// if no subcommand was provided forward to the validate command
-	//
-	// The puppet autosign config doesnt't allow for subcommands being specified
-	// so we ll forward the command ourselves
-	cmd, _, err := rootCmd.Find(os.Args[1:])
-	if len(os.Args[1:]) == 1 && err == nil && cmd.Use == rootCmd.Use && cmd.Flags().Parse(os.Args[1:]) != pflag.ErrHelp {
+	cmd, _, err := RootCmd.Find(os.Args[1:])
+	if len(os.Args[1:]) == 1 && err == nil && cmd.Use == RootCmd.Use && cmd.Flags().Parse(os.Args[1:]) != pflag.ErrHelp {
 		args := append([]string{defCmd}, os.Args[1:]...)
-		rootCmd.SetArgs(args)
+		RootCmd.SetArgs(args)
 	}
 
-	if err := rootCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

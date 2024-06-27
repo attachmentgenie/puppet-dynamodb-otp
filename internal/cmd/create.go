@@ -54,6 +54,6 @@ var createCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(createCmd)
+	RootCmd.AddCommand(createCmd)
 	createCmd.PersistentFlags().Int("ttl", 300, "Token time to live (sec)")
 }

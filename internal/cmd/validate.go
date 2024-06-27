@@ -20,7 +20,7 @@ var validateCsrCmd = &cobra.Command{
 	Short: "Validate puppet certificate signing request.",
 	Long:  "Validate puppet certificate signing request in puppet auto signing ceremony.",
 	Args: func(cmd *cobra.Command, args []string) error {
-		// we need to undo the trick we setup in rootCmd
+		// we need to undo the trick we setup in RootCmd
 		args = fixArgs(args)
 
 		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
@@ -32,7 +32,7 @@ var validateCsrCmd = &cobra.Command{
 		return fmt.Errorf("invalid fqdn specified: %s", args[0])
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		// we need to undo the trick we setup in rootCmd
+		// we need to undo the trick we setup in RootCmd
 		args = fixArgs(args)
 
 		fqdn := args[0]
@@ -67,11 +67,11 @@ var validateCsrCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(validateCsrCmd)
+	RootCmd.AddCommand(validateCsrCmd)
 }
 
 // The puppet autosign config doesnt't allow for subcommands being specified
-// we need to undo the trick we setup in rootCmd
+// we need to undo the trick we setup in RootCmd
 func fixArgs(args []string) []string {
 	if len(args) > 0 && args[0] == "validate-csr" {
 		args = args[1:]
