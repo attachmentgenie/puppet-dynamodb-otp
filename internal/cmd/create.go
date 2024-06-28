@@ -1,18 +1,14 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
-	"strconv"
 	"time"
 
-	net "github.com/THREATINT/go-net"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/THREATINT/go-net"
 	"github.com/spf13/cobra"
 	"github.com/thanhpk/randstr"
+
+	otp "github.com/attachmentgenie/puppet-dynamodb-otp/internal/aws"
 )
 
 // createCmd represents the create command
@@ -35,20 +31,7 @@ var createCmd = &cobra.Command{
 		expire_at_unix := time.Now().Unix() + int64(ttl)
 		otp_token := randstr.Hex(16)
 
-		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
-		if err != nil {
-			panic(err)
-		}
-		svc := dynamodb.NewFromConfig(cfg)
-		_, err = svc.PutItem(context.TODO(), &dynamodb.PutItemInput{
-			TableName: aws.String("puppet-dynamodb-otp"),
-			Item: map[string]types.AttributeValue{
-				"expire_at_unix": &types.AttributeValueMemberN{Value: strconv.FormatInt(expire_at_unix, 10)},
-				"fqdn":           &types.AttributeValueMemberS{Value: fqdn},
-				"otp_token":      &types.AttributeValueMemberS{Value: otp_token},
-			},
-		})
-
+		otp.Create(expire_at_unix, fqdn, otp_token)
 		fmt.Println("Successfully created otp for " + fqdn + " " + otp_token + " which expires at " + time.Unix(expire_at_unix, 0).Format(time.Kitchen) + "")
 	},
 }

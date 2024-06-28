@@ -1,15 +1,12 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
-	net "github.com/THREATINT/go-net"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/THREATINT/go-net"
 	"github.com/spf13/cobra"
+
+	otp "github.com/attachmentgenie/puppet-dynamodb-otp/internal/aws"
 )
 
 // deleteCmd represents the delete command
@@ -29,21 +26,7 @@ var deleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fqdn := args[0]
 
-		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
-		if err != nil {
-			panic(err)
-		}
-		svc := dynamodb.NewFromConfig(cfg)
-		_, err = svc.DeleteItem(context.TODO(), &dynamodb.DeleteItemInput{
-			TableName: aws.String("puppet-dynamodb-otp"),
-			Key: map[string]types.AttributeValue{
-				"fqdn": &types.AttributeValueMemberS{Value: fqdn},
-			},
-		})
-		if err != nil {
-			panic(err)
-		}
-
+		otp.Delete(fqdn)
 		fmt.Println("Successfully deleted otp for " + fqdn + "")
 	},
 }

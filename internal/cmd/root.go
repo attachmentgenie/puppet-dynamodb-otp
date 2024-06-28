@@ -8,11 +8,10 @@ import (
 	"github.com/spf13/pflag"
 )
 
-type Item struct {
-	Year   int
-	Title  string
-	Plot   string
-	Rating float64
+type otp_token struct {
+	Expire_at_unix int64
+	Fqdn           string
+	Otp_token      string
 }
 
 // RootCmd represents the base command when called without any subcommands
