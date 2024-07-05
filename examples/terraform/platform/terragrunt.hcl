@@ -7,5 +7,6 @@ dependency "mgmt" {
 }
 
 inputs = {
-  foo = dependency.mgmt.outputs.foo
+  puppetserver   = dependency.mgmt.outputs.puppetserver
+  security_group = dependency.mgmt.outputs.security_group
 }

@@ -1,17 +1,16 @@
-output "foo" {
-  value = "bar"
+output "private_key" {
+  value     = trimspace(module.otp_key.private_key_openssh)
+  sensitive = true
 }
 
-# output "private_key" {
-#   value     = tls_private_key.ssh_key.private_key_pem
-#   sensitive = true
-# }
+output "security_group" {
+  value = module.otp_sg.security_group_name
+}
 
-# output "public_key" {
-#   value     = tls_private_key.ssh_key.public_key_openssh
-#   sensitive = true
-# }
+output "puppetserver" {
+  value = module.puppetserver.private_ip
+}
 
-# output "puppetserver" {
-#   value = aws_instance.puppetserver.public_dns
-# }
+output "public_ip" {
+  value = module.puppetserver.public_dns
+}

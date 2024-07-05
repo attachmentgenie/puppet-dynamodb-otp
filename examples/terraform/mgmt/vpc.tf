@@ -22,7 +22,7 @@ module "otp_sg" {
   name   = "otp-ssh"
   vpc_id = module.otp_vpc.vpc_id
 
-  ingress_cidr_blocks = ["10.10.0.0/16"]
+  ingress_cidr_blocks = ["0.0.0.0/0"]
 
   tags = local.tags
 }
