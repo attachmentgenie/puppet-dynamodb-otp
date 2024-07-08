@@ -26,9 +26,15 @@ module "puppetserver" {
   vpc_security_group_ids = [module.otp_sg.security_group_id]
 
   associate_public_ip_address = true
-  iam_instance_profile        = module.otp_node_role.iam_instance_profile_name
-  instance_type               = "t3.medium"
-  user_data                   = <<-EOT
+
+  create_iam_instance_profile = true
+  iam_role_description        = "IAM role for puppetserver"
+  iam_role_policies = {
+    AmazonDynamoDBFullAccess = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+  }
+
+  instance_type = "t3.medium"
+  user_data     = <<-EOT
 #cloud-config
 fqdn: puppet
 prefer_fqdn_over_hostname: true

@@ -12,6 +12,24 @@ module "puppet-dynamodb-otp" {
     {
       name = "fqdn"
       type = "S"
+    },
+    {
+      name = "expire_at_unix"
+      type = "N"
+    },
+    {
+      name = "otp_token"
+      type = "S"
+    }
+  ]
+
+  global_secondary_indexes = [
+    {
+      name               = "expire_at_unix"
+      hash_key           = "expire_at_unix"
+      range_key          = "otp_token"
+      projection_type    = "INCLUDE"
+      non_key_attributes = ["otp_token"]
     }
   ]
 

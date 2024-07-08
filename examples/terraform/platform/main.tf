@@ -11,7 +11,7 @@ resource "aws_dynamodb_table_item" "token" {
 
   item = <<ITEM
 {
-  "expire_at_unix": {"S": "${time_static.current_date.unix + 300}"},
+  "expire_at_unix": {"N": "${time_static.current_date.unix + 300}"},
   "fqdn": {"S": "client1"},
   "otp_token": {"S": "${random_string.token.result}"}
 }

@@ -26,7 +26,6 @@ var validateCsrCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-
 		inputReader := cmd.InOrStdin()
 		csrPEM, err := io.ReadAll(inputReader)
 		if err != nil {
@@ -36,18 +35,16 @@ var validateCsrCmd = &cobra.Command{
 		if block == nil {
 			log.Fatal("failed to decode PEM block")
 		}
-
 		// https://github.com/golang/go/issues/15995
 		// https://github.com/micromdm/scep/pull/45
 		//
 		// The pem package is not able to parse challenge passwords yet,
 		// so we need to obtain that through some parsing of our own.
 		// Luckily someone did the hard work for us already
-		cp, err := x509util.ParseChallengePassword(block.Bytes)
+		csrCP, err := x509util.ParseChallengePassword(block.Bytes)
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(cp)
 
 		fqdn := args[0]
 		otp, err := otp.Read(fqdn)
@@ -55,10 +52,10 @@ var validateCsrCmd = &cobra.Command{
 			log.Fatalf("unable to find otp token for %s", fqdn)
 		}
 
-		if otp.Otp_token == cp {
+		if otp.Otp_token == csrCP {
 			fmt.Println("Found otp for " + fqdn + "")
 		} else {
-			log.Fatalf("unable to find otp token for %s", fqdn)
+			log.Fatalf("Unable to match otp token for %s", fqdn)
 		}
 	},
 }
