@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/THREATINT/go-net"
 	"github.com/jedib0t/go-pretty/table"
 	"github.com/spf13/cobra"
 
@@ -21,12 +20,6 @@ var listCmd = &cobra.Command{
 	Args: func(cmd *cobra.Command, args []string) error {
 		if err := cobra.MaximumNArgs(1)(cmd, args); err != nil {
 			return err
-		}
-		if len(args) == 1 {
-			if net.IsFQDN(args[0]) {
-				return nil
-			}
-			return fmt.Errorf("invalid fqdn specified: %s", args[0])
 		}
 		return nil
 	},

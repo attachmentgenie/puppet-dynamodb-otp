@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/attachmentgenie/puppet-dynamodb-otp/cmd"
 
-	"github.com/attachmentgenie/puppet-dynamodb-otp/internal/cmd"
 	"github.com/spf13/cobra"
 )
 

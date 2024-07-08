@@ -3,19 +3,18 @@ module github.com/attachmentgenie/puppet-dynamodb-otp
 go 1.22.4
 
 require (
-	github.com/THREATINT/go-net v1.2.37
 	github.com/aws/aws-sdk-go-v2 v1.30.1
 	github.com/aws/aws-sdk-go-v2/config v1.27.24
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.34.1
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
+	github.com/micromdm/scep/v2 v2.2.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/thanhpk/randstr v1.0.6
 )
 
 require (
-	github.com/PuerkitoBio/purell v1.2.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.24 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.9 // indirect
@@ -40,7 +39,5 @@ require (
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	go.mongodb.org/mongo-driver v1.16.0 // indirect
-	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 )

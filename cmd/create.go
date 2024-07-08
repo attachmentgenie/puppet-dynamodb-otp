@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/THREATINT/go-net"
 	"github.com/spf13/cobra"
 	"github.com/thanhpk/randstr"
 
@@ -20,10 +19,7 @@ var createCmd = &cobra.Command{
 		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
 			return err
 		}
-		if net.IsFQDN(args[0]) {
-			return nil
-		}
-		return fmt.Errorf("invalid fqdn specified: %s", args[0])
+		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		fqdn := args[0]

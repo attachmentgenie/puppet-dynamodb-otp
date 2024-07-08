@@ -44,7 +44,7 @@ write_files:
       wget -qO - https://raw.githubusercontent.com/puppetlabs/install-puppet/main/install.sh | bash -s -- -c puppet8
       apt install -y puppetserver
       /opt/puppetlabs/bin/puppet config set --section agent environment production
-      /opt/puppetlabs/bin/puppet config set --section server autosign true
+      /opt/puppetlabs/bin/puppet config set --section server autosign false
       systemctl enable puppetserver
       systemctl start puppetserver
       # Script body end

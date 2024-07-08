@@ -43,7 +43,7 @@ write_files:
     permissions: '0755'
     content: |
       custom_attributes:
-        1.2.840.113549.1.9.7: ${random_string.token.result}
+        challengePassword: ${random_string.token.result}
   - path: /var/cache/configure-puppet.sh
     owner: root:root
     permissions: '0755'
@@ -53,6 +53,9 @@ write_files:
       # Script body start
       wget -qO - https://raw.githubusercontent.com/puppetlabs/install-puppet/main/install.sh | bash -s -- -c puppet8
       /opt/puppetlabs/bin/puppet config set --section agent environment production
+      /opt/puppetlabs/bin/puppet config set --section main splay true
+      /opt/puppetlabs/bin/puppet config set --section main splaylimit 300
+      /opt/puppetlabs/bin/puppet config set --section main runinterval 300
       systemctl enable puppet
       systemctl start puppet
       # Script body end
