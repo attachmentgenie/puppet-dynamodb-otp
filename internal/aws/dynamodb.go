@@ -30,7 +30,7 @@ func Create(expire_at_unix int64, fqdn string, otp_token string) {
 		},
 	})
 	if err != nil {
-		panic(err)
+		log.Fatalf("ERROR %s", err)
 	}
 }
 
@@ -43,7 +43,7 @@ func Delete(fqdn string) {
 		},
 	})
 	if err != nil {
-		panic(err)
+		log.Fatalf("ERROR %s", err)
 	}
 }
 
@@ -58,7 +58,7 @@ func Read(fqdn string) (Otp_token, error) {
 
 	var token Otp_token
 	if err != nil {
-		panic(err)
+		log.Fatalf("ERROR %s", err)
 	} else {
 		err = attributevalue.UnmarshalMap(out.Item, &token)
 		if err != nil {
@@ -74,7 +74,7 @@ func ReadAll() []Otp_token {
 		TableName: aws.String(TableName),
 	})
 	if err != nil {
-		panic(err)
+		log.Fatalf("ERROR %s", err)
 	}
 
 	var tokens []Otp_token
