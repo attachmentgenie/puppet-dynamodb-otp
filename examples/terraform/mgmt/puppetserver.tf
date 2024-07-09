@@ -35,11 +35,16 @@ module "puppetserver" {
 
   instance_type = "t3.medium"
   user_data     = <<-EOT
+## template: jinja
 #cloud-config
 fqdn: puppet
 prefer_fqdn_over_hostname: true
 hostname: puppet
 write_files:
+  - path: "/etc/environment"
+    append: true
+    content: |
+      export AWS_REGION="{{ v1.region }}"
   - path: /var/cache/configure-puppetserver.sh
     owner: root:root
     permissions: '0755'
@@ -50,13 +55,17 @@ write_files:
       wget -qO - https://raw.githubusercontent.com/puppetlabs/install-puppet/main/install.sh | bash -s -- -c puppet8
       apt install -y puppetserver
       /opt/puppetlabs/bin/puppet config set --section agent environment production
-      /opt/puppetlabs/bin/puppet config set --section server autosign false
-      systemctl enable puppetserver
-      systemctl start puppetserver
+      /opt/puppetlabs/bin/puppet config set --section server autosign /usr/local/bin/puppet-dynamodb-otp
       # Script body end
+  - path: "/etc/systemd/system/puppetserver.service.d/env.conf"
+    content: |
+      [Service]
+      Environment="AWS_REGION={{ v1.region }}"
 runcmd:
   - systemctl disable ufw
   - /var/cache/configure-puppetserver.sh
+  - systemctl enable puppetserver
+  - systemctl start puppetserver
   EOT
 
   tags = local.tags

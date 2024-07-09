@@ -20,7 +20,7 @@ type Otp_token struct {
 }
 
 func Create(expire_at_unix int64, fqdn string, otp_token string) {
-	svc := GetAwsClient()
+	svc := GetDynamodbClient()
 	_, err := svc.PutItem(context.TODO(), &dynamodb.PutItemInput{
 		TableName: aws.String(TableName),
 		Item: map[string]types.AttributeValue{
@@ -35,7 +35,7 @@ func Create(expire_at_unix int64, fqdn string, otp_token string) {
 }
 
 func Delete(fqdn string) {
-	svc := GetAwsClient()
+	svc := GetDynamodbClient()
 	_, err := svc.DeleteItem(context.TODO(), &dynamodb.DeleteItemInput{
 		TableName: aws.String(TableName),
 		Key: map[string]types.AttributeValue{
@@ -48,7 +48,7 @@ func Delete(fqdn string) {
 }
 
 func Read(fqdn string) (Otp_token, error) {
-	svc := GetAwsClient()
+	svc := GetDynamodbClient()
 	out, err := svc.GetItem(context.TODO(), &dynamodb.GetItemInput{
 		TableName: aws.String(TableName),
 		Key: map[string]types.AttributeValue{
@@ -69,7 +69,7 @@ func Read(fqdn string) (Otp_token, error) {
 }
 
 func ReadAll() []Otp_token {
-	svc := GetAwsClient()
+	svc := GetDynamodbClient()
 	out, err := svc.Scan(context.TODO(), &dynamodb.ScanInput{
 		TableName: aws.String(TableName),
 	})

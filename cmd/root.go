@@ -8,12 +8,6 @@ import (
 	"github.com/spf13/pflag"
 )
 
-type otp_token struct {
-	Expire_at_unix int64
-	Fqdn           string
-	Otp_token      string
-}
-
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "puppet-dynamodb-otp",
