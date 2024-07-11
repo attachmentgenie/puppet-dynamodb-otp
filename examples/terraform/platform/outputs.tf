@@ -1,3 +1,3 @@
 output "public_dns" {
-  value = module.client1.public_dns
+  value = tomap({ for i, node in module.clients : i => node.public_dns })
 }

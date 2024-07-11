@@ -23,9 +23,9 @@ func (svc *Client) Create(expire_at_unix int64, fqdn string, otp_token string) {
 	_, err := svc.dynamodb.PutItem(context.TODO(), &dynamodb.PutItemInput{
 		TableName: aws.String(TableName),
 		Item: map[string]types.AttributeValue{
-			"expire_at_unix": &types.AttributeValueMemberN{Value: strconv.FormatInt(expire_at_unix, 10)},
-			"fqdn":           &types.AttributeValueMemberS{Value: fqdn},
-			"otp_token":      &types.AttributeValueMemberS{Value: otp_token},
+			"expire_at_unix":   &types.AttributeValueMemberN{Value: strconv.FormatInt(expire_at_unix, 10)},
+			"fqdn":             &types.AttributeValueMemberS{Value: fqdn},
+			"token_table_item": &types.AttributeValueMemberS{Value: otp_token},
 		},
 	})
 	if err != nil {

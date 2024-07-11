@@ -9,6 +9,14 @@ terraform {
       source  = "hashicorp/aws"
       version = "5.56.1"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.6.2"
+    }
+    time = {
+      source  = "hashicorp/time"
+      version = "0.11.2"
+    }
     tls = {
       source  = "hashicorp/tls"
       version = "4.0.5"
