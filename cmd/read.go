@@ -28,9 +28,13 @@ var listCmd = &cobra.Command{
 		t.SetOutputMirror(os.Stdout)
 		t.AppendHeader(table.Row{"FQDN", "Expires at", "OTP token"})
 
+		client, err := otp.New()
+		if err != nil {
+			panic(err)
+		}
 		if len(args) == 1 {
 			fqdn := args[0]
-			otp_token, err := otp.Read(fqdn)
+			otp_token, err := client.Read(fqdn)
 			if err != nil {
 				t.AppendRow([]interface{}{otp_token.Fqdn, time.Unix(otp_token.Expire_at_unix, 0).Format(time.Kitchen), otp_token.Otp_token})
 				t.Render()
@@ -38,7 +42,7 @@ var listCmd = &cobra.Command{
 				log.Fatalf("unable to find otp token for %s", fqdn)
 			}
 		} else {
-			tokens := otp.ReadAll()
+			tokens := client.ReadAll()
 			if len(tokens) > 0 {
 				for _, record := range tokens {
 					t.AppendRow([]interface{}{record.Fqdn, time.Unix(record.Expire_at_unix, 0).Format(time.Kitchen), record.Otp_token})

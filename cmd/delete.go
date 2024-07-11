@@ -22,7 +22,11 @@ var deleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fqdn := args[0]
 
-		otp.Delete(fqdn)
+		client, err := otp.New()
+		if err != nil {
+			panic(err)
+		}
+		client.Delete(fqdn)
 		fmt.Println("Successfully deleted otp for " + fqdn + "")
 	},
 }

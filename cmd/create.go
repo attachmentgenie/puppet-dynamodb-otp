@@ -27,7 +27,11 @@ var createCmd = &cobra.Command{
 		expire_at_unix := time.Now().Unix() + int64(ttl)
 		otp_token := randstr.Hex(16)
 
-		otp.Create(expire_at_unix, fqdn, otp_token)
+		client, err := otp.New()
+		if err != nil {
+			panic(err)
+		}
+		client.Create(expire_at_unix, fqdn, otp_token)
 		fmt.Println("Successfully created otp for " + fqdn + " " + otp_token + " which expires at " + time.Unix(expire_at_unix, 0).Format(time.Kitchen) + "")
 	},
 }

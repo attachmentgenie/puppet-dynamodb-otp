@@ -8,10 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
-func GetDynamodbClient() *dynamodb.Client {
+type Client struct {
+	dynamodb *dynamodb.Client
+}
+
+func New() (*Client, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		log.Fatalf("ERROR %s", err)
 	}
-	return dynamodb.NewFromConfig(cfg)
+	client := &Client{
+		dynamodb: dynamodb.NewFromConfig(cfg),
+	}
+	return client, nil
 }

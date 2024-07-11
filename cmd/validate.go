@@ -1,14 +1,14 @@
 package cmd
 
 import (
-	"encoding/pem"
 	"fmt"
-	otp "github.com/attachmentgenie/puppet-dynamodb-otp/internal/aws"
 	"io"
 	"log"
 
-	"github.com/micromdm/scep/v2/cryptoutil/x509util"
 	"github.com/spf13/cobra"
+
+	otp "github.com/attachmentgenie/puppet-dynamodb-otp/internal/aws"
+	"github.com/attachmentgenie/puppet-dynamodb-otp/internal/puppet"
 )
 
 // validateCsrCmd represents the validateCsr command
@@ -31,23 +31,17 @@ var validateCsrCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
-		block, _ := pem.Decode(csrPEM)
-		if block == nil {
-			log.Fatal("failed to decode PEM block")
-		}
-		// https://github.com/golang/go/issues/15995
-		// https://github.com/micromdm/scep/pull/45
-		//
-		// The pem package is not able to parse challenge passwords yet,
-		// so we need to obtain that through some parsing of our own.
-		// Luckily someone did the hard work for us already
-		csrCP, err := x509util.ParseChallengePassword(block.Bytes)
+		csrCP, err := puppet.GetChallengePassword(csrPEM)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		fqdn := args[0]
-		otp, err := otp.Read(fqdn)
+		client, err := otp.New()
+		if err != nil {
+			panic(err)
+		}
+		otp, err := client.Read(fqdn)
 		if err != nil {
 			log.Fatalf("unable to find otp token for %s", fqdn)
 		}
