@@ -48,8 +48,8 @@ write_files:
       #!/bin/sh
       #
       # Script body start
-      wget https://github.com/attachmentgenie/puppet-dynamodb-otp/releases/download/v0.1.2/puppet-dynamodb-otp_0.1.2_linux_amd64.deb
-      dpkg --force-overwrite -i puppet-dynamodb-otp_0.1.2_linux_amd64.deb
+      wget https://github.com/attachmentgenie/puppet-dynamodb-otp/releases/download/v0.1.3/puppet-dynamodb-otp_0.1.3_linux_amd64.deb
+      dpkg --force-overwrite -i puppet-dynamodb-otp_0.1.3_linux_amd64.deb
       # Script body end
   - path: /var/cache/configure-puppetserver.sh
     owner: root:root
@@ -63,6 +63,10 @@ write_files:
       /opt/puppetlabs/bin/puppet config set --section agent environment production
       /opt/puppetlabs/bin/puppet config set --section server autosign /usr/bin/puppet-dynamodb-otp
       # Script body end
+  - path: "/etc/environment"
+    append: true
+    content: |
+      export AWS_REGION="{{ v1.region }}"
   - path: "/etc/systemd/system/puppetserver.service.d/env.conf"
     content: |
       [Service]

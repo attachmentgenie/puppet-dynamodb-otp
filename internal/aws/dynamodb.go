@@ -14,9 +14,9 @@ import (
 var TableName = "puppet-dynamodb-otp"
 
 type Otp_token struct {
-	Expire_at_unix int64
-	Fqdn           string
-	Otp_token      string
+	Expire_at_unix   int64
+	Fqdn             string
+	Token_table_item string
 }
 
 func (svc *Client) Create(expire_at_unix int64, fqdn string, otp_token string) {
