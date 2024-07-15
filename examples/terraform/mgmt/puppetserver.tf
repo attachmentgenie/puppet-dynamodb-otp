@@ -41,10 +41,16 @@ fqdn: puppet
 prefer_fqdn_over_hostname: true
 hostname: puppet
 write_files:
-  - path: "/etc/environment"
-    append: true
+  - path: /var/cache/configure-puppet-dynamodb-otp.sh
+    owner: root:root
+    permissions: '0755'
     content: |
-      export AWS_REGION="{{ v1.region }}"
+      #!/bin/sh
+      #
+      # Script body start
+      wget https://github.com/attachmentgenie/puppet-dynamodb-otp/releases/download/v0.1.2/puppet-dynamodb-otp_0.1.2_linux_amd64.deb
+      dpkg --force-overwrite -i puppet-dynamodb-otp_0.1.2_linux_amd64.deb
+      # Script body end
   - path: /var/cache/configure-puppetserver.sh
     owner: root:root
     permissions: '0755'
@@ -55,7 +61,7 @@ write_files:
       wget -qO - https://raw.githubusercontent.com/puppetlabs/install-puppet/main/install.sh | bash -s -- -c puppet8
       apt install -y puppetserver
       /opt/puppetlabs/bin/puppet config set --section agent environment production
-      /opt/puppetlabs/bin/puppet config set --section server autosign /usr/local/bin/puppet-dynamodb-otp
+      /opt/puppetlabs/bin/puppet config set --section server autosign /usr/bin/puppet-dynamodb-otp
       # Script body end
   - path: "/etc/systemd/system/puppetserver.service.d/env.conf"
     content: |
@@ -63,6 +69,7 @@ write_files:
       Environment="AWS_REGION={{ v1.region }}"
 runcmd:
   - systemctl disable ufw
+  - /var/cache/configure-puppet-dynamodb-otp.sh
   - /var/cache/configure-puppetserver.sh
   - systemctl enable puppetserver
   - systemctl start puppetserver
