@@ -46,7 +46,7 @@ var validateCsrCmd = &cobra.Command{
 			log.Fatalf("unable to find otp token for %s", fqdn)
 		}
 
-		if otp.Otp_token == csrCP {
+		if otp.Token_table_item == csrCP {
 			fmt.Println("Found otp for " + fqdn + "")
 		} else {
 			log.Fatalf("Unable to match otp token for %s", fqdn)
