@@ -16,7 +16,7 @@ tag:
 	git tag $(shell svu next)
 	git push --tags
 .PHONY: release
-release: tag
+release:
 	goreleaser --clean
 
 .PHONY: run

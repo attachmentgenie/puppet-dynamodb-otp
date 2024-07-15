@@ -1,3 +1,3 @@
 FROM scratch
-ENTRYPOINT ["/puppet-dynamodb-otpe"]
-COPY puppet-dynamodb-otpe /
+ENTRYPOINT ["/puppet-dynamodb-otp"]
+COPY puppet-dynamodb-otp /
