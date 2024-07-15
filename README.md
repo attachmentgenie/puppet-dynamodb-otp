@@ -1,6 +1,6 @@
 # puppet-dynamodb-otp
 
-![goreleaser](https://github.com/attachmentgenie/puppet-dynamodb-otp/workflows/goreleaser/badge.svg)
+![goreleaser](https://github.com/attachmentgenie/puppet-dynamodb-otp/actions/workflows/publish.yml/badge.svg)
 
 Tool for use as one time password check for puppet certificate CSRs.
 
