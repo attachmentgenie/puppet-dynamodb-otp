@@ -1,7 +1,3 @@
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
 module "otp_vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"

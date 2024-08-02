@@ -4,6 +4,8 @@
 
 Tool for use as one time password check for puppet certificate CSRs.
 
+![puppet-dynamodb-otp](puppet-dynamodb-otp.png)
+
 ## install
 
 ### os x

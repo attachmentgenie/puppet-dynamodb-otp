@@ -4,4 +4,6 @@ module "otp_key" {
 
   key_name           = "otp"
   create_private_key = true
+
+  tags = local.tags
 }
