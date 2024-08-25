@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.30.4
 	github.com/aws/aws-sdk-go-v2/config v1.27.28
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.14.11
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.34.5
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.34.6
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/micromdm/scep/v2 v2.2.0
 	github.com/spf13/cobra v1.8.1
