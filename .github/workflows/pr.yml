@@ -15,7 +15,11 @@ jobs:
           go-version-file: go.mod
       - uses: golangci/golangci-lint-action@v8
         with:
+<<<<<<< HEAD
           version: v2.0.2
+=======
+          version: v1.62.2
+>>>>>>> d32cf2d (chore: version bumps)
   test:
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +29,11 @@ jobs:
           go-version-file: go.mod
       - uses: golangci/golangci-lint-action@v8
         with:
+<<<<<<< HEAD
           version: v2.0.2
+=======
+          version: v1.62.2
+>>>>>>> d32cf2d (chore: version bumps)
       - run: go test ./...
   build:
     runs-on: ubuntu-latest
@@ -39,5 +47,5 @@ jobs:
       - uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: v2.2.0
+          version: v2.5.0
           args: build --snapshot --clean
