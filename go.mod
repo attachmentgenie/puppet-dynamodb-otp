@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.15.22
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.38.1
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
-	github.com/micromdm/scep/v2 v2.2.0
+	github.com/micromdm/scep/v2 v2.3.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/thanhpk/randstr v1.0.6
@@ -39,5 +39,5 @@ require (
 	github.com/oklog/ulid v1.3.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	go.mongodb.org/mongo-driver v1.16.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
 )
