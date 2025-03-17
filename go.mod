@@ -1,7 +1,6 @@
 module github.com/attachmentgenie/puppet-dynamodb-otp
 
 go 1.22.5
-
 require (
 	github.com/aws/aws-sdk-go-v2 v1.36.3
 	github.com/aws/aws-sdk-go-v2/config v1.29.9
@@ -10,7 +9,7 @@ require (
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/micromdm/scep/v2 v2.3.0
 	github.com/spf13/cobra v1.8.1
-	github.com/spf13/pflag v1.0.5
+	github.com/spf13/pflag v1.0.6
 	github.com/thanhpk/randstr v1.0.6
 )
 
