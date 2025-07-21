@@ -10,7 +10,7 @@ require (
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/micromdm/scep/v2 v2.3.0
 	github.com/spf13/cobra v1.9.1
-	github.com/spf13/pflag v1.0.6
+	github.com/spf13/pflag v1.0.7
 	github.com/thanhpk/randstr v1.0.6
 )
 
