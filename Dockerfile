@@ -1,3 +1,4 @@
 FROM scratch
-ENTRYPOINT ["/puppet-dynamodb-otp"]
-COPY puppet-dynamodb-otp /
+ARG TARGETPLATFORM
+ENTRYPOINT ["/usr/bin/puppet-dynamodb-otp"]
+COPY $TARGETPLATFORM/puppet-dynamodb-otp /usr/bin/
