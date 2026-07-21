@@ -4,11 +4,30 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "ci(deps)"
+
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "build(deps)"
+    groups:
+      aws-sdk:
+        patterns:
+          - "github.com/aws/aws-sdk-go-v2*"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "build(docker)"
+
   - package-ecosystem: "terraform"
     directory: "/examples/terraform"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "build(terraform)"

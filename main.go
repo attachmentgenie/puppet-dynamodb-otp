@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/attachmentgenie/puppet-dynamodb-otp/cmd"
+	"os"
 
-	"github.com/spf13/cobra"
+	"github.com/attachmentgenie/puppet-dynamodb-otp/cmd"
 )
 
 var (
@@ -13,19 +13,13 @@ var (
 	date    = "unknown"
 )
 
-var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "Return the version identifier.",
-	Long:  `Return the version identifier for this application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("puppet-dynamodb-otp %s, commit %s, built at %s", version, commit, date)
-	},
-}
-
 func main() {
-	cmd.RootCmd.AddCommand(versionCmd)
+	cmd.SetVersionInfo(version, commit, date)
 
-	// The puppet autosign config doesnt't allow for subcommands being specified
-	// so we ll forward the command ourselves
-	cmd.Execute("validate-csr")
+	// The puppet autosign config doesn't allow for subcommands being specified
+	// so we forward the command ourselves.
+	if err := cmd.Execute("validate-csr"); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }

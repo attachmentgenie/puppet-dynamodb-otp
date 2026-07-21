@@ -2,25 +2,30 @@ package puppet
 
 import (
 	"encoding/pem"
-	"log"
+	"errors"
+	"fmt"
 
 	"github.com/micromdm/scep/v2/cryptoutil/x509util"
 )
 
-func GetChallengePassword(PEM []byte) (string, error) {
-	block, _ := pem.Decode(PEM)
+var ErrInvalidPEM = errors.New("failed to decode PEM block")
+
+// GetChallengePassword extracts the challenge password from a PEM-encoded CSR.
+func GetChallengePassword(pemBytes []byte) (string, error) {
+	block, _ := pem.Decode(pemBytes)
 	if block == nil {
-		log.Fatal("failed to decode PEM block")
+		return "", ErrInvalidPEM
 	}
+
 	// https://github.com/golang/go/issues/15995
 	// https://github.com/micromdm/scep/pull/45
 	//
 	// The pem package is not able to parse challenge passwords yet,
 	// so we need to obtain that through some parsing of our own.
-	// Luckily someone did the hard work for us already
 	csrCP, err := x509util.ParseChallengePassword(block.Bytes)
 	if err != nil {
-		log.Fatal(err)
+		return "", fmt.Errorf("parsing challenge password: %w", err)
 	}
-	return csrCP, err
+
+	return csrCP, nil
 }

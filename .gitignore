@@ -1,3 +1,15 @@
+# OS & Editor Files
+.DS_Store
+.idea/
+.vscode/
 
+# Build & Test Artifacts
+bin/
 dist/
 puppet-dynamodb-otp
+coverage.out
+
+# Terragrunt & Terraform Cache
+.terragrunt-cache/
+*.tfstate
+*.tfstate.backup

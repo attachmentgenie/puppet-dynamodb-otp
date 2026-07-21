@@ -4,23 +4,25 @@ before:
     - go mod download
 archives:
   - id: darwin
-    builds:
-    - darwin
-    format: zip
+    ids:
+      - darwin
+    formats:
+      - zip
   - id: linux
-    builds:
-    - linux
-    format: zip
+    ids:
+      - linux
+    formats:
+      - zip
   - id: windows
-    builds:
+    ids:
       - windows
-    format: zip
-brews:
+    formats:
+      - zip
+homebrew_casks:
   - ids:
       - darwin
-    directory: Formula
-    install: |
-      bin.install "{{.ProjectName}}"
+    binaries:
+      - "{{.ProjectName}}"
     repository:
       owner: attachmentgenie
       name: homebrew-tap
@@ -34,6 +36,11 @@ builds:
     goarch:
       - amd64
       - arm64
+    ldflags:
+      - -s -w
+      - -X "main.commit={{.ShortCommit}}"
+      - -X "main.date={{.Date}}"
+      - -X "main.version={{.Version}}"
   - id: linux
     env:
       - CGO_ENABLED=0
@@ -42,6 +49,11 @@ builds:
     goarch:
       - amd64
       - arm64
+    ldflags:
+      - -s -w
+      - -X "main.commit={{.ShortCommit}}"
+      - -X "main.date={{.Date}}"
+      - -X "main.version={{.Version}}"
   - id: windows
     env:
       - CGO_ENABLED=0
@@ -49,49 +61,31 @@ builds:
       - windows
     goarch:
       - amd64
-dockers:
-  - image_templates:
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-amd64"
-    use: buildx
-    dockerfile: Dockerfile
-    build_flag_templates:
-      - "--label=org.opencontainers.image.source https://github.com/attachmentgenie/{{.ProjectName}}"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--platform=linux/amd64"
-  - image_templates:
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-arm64v8"
-    use: buildx
-    goarch: arm64
-    goarm: "8"
-    dockerfile: Dockerfile
-    build_flag_templates:
-      - "--label=org.opencontainers.image.source https://github.com/attachmentgenie/{{.ProjectName}}"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
-      - "--platform=linux/arm64/v8"
-docker_manifests:
-  - name_template: "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}"
-    image_templates:
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-amd64"
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-arm64v8"
-  - name_template: "ghcr.io/attachmentgenie/{{.ProjectName}}:v{{ .Major }}"
-    image_templates:
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-amd64"
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-arm64v8"
-  - name_template: "ghcr.io/attachmentgenie/{{.ProjectName}}:latest"
-    image_templates:
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-amd64"
-      - "ghcr.io/attachmentgenie/{{.ProjectName}}:{{ .Version }}-arm64v8"
+    ldflags:
+      - -s -w
+      - -X "main.commit={{.ShortCommit}}"
+      - -X "main.date={{.Date}}"
+      - -X "main.version={{.Version}}"
+dockers_v2:
+  - images:
+      - "ghcr.io/attachmentgenie/{{.ProjectName}}"
+    tags:
+      - "{{ .Version }}"
+      - "v{{ .Major }}"
+      - "{{ if not .IsNightly }}latest{{ end }}"
+    labels:
+      "org.opencontainers.image.description": "Foo bar"
+      "org.opencontainers.image.name": "{{.ProjectName}}"
+      "org.opencontainers.image.source": "{{.GitURL}}"
+      "org.opencontainers.image.created": "{{.Date}}"
+      "org.opencontainers.image.title=": "{{.ProjectName}}"
+      "org.opencontainers.image.revision": "{{.ShortCommit}}"
+      "org.opencontainers.image.version": "{{.Version}}"
 nfpms:
   - id: linux
     maintainer: 'bram vogelaar <bram@attachmentgenie.com>'
     package_name: "{{.ProjectName}}"
-    builds:
+    ids:
       - linux
     formats:
       - deb

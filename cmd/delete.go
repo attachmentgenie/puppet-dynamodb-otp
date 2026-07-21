@@ -5,29 +5,31 @@ import (
 
 	"github.com/spf13/cobra"
 
-	otp "github.com/attachmentgenie/puppet-dynamodb-otp/internal/aws"
+	"github.com/attachmentgenie/puppet-dynamodb-otp/internal/store"
 )
 
-// deleteCmd represents the delete command
 var deleteCmd = &cobra.Command{
 	Use:   "delete FQDN",
 	Short: "Delete an OTP token.",
 	Long:  "Delete an OTP token for use in puppet auto signing ceremony.",
-	Args: func(cmd *cobra.Command, args []string) error {
-		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
-			return err
-		}
-		return nil
-	},
-	Run: func(cmd *cobra.Command, args []string) {
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
 		fqdn := args[0]
 
-		client, err := otp.New()
+		ctx, cancel := GetCommandContext(cmd)
+		defer cancel()
+
+		s, err := store.NewDynamoDBStoreWithTableName(ctx, TableName)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("initializing storage client: %w", err)
 		}
-		client.Delete(fqdn)
-		fmt.Println("Successfully deleted otp for " + fqdn + "")
+
+		if err := s.Delete(ctx, fqdn); err != nil {
+			return err
+		}
+
+		cmd.Printf("Successfully deleted otp for %s\n", fqdn)
+		return nil
 	},
 }
 

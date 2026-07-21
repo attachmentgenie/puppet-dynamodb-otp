@@ -3,21 +3,19 @@ package cmd
 import (
 	"fmt"
 	"io"
-	"log"
 
 	"github.com/spf13/cobra"
 
-	otp "github.com/attachmentgenie/puppet-dynamodb-otp/internal/aws"
 	"github.com/attachmentgenie/puppet-dynamodb-otp/internal/puppet"
+	"github.com/attachmentgenie/puppet-dynamodb-otp/internal/store"
 )
 
-// validateCsrCmd represents the validateCsr command
 var validateCsrCmd = &cobra.Command{
 	Use:   "validate-csr FQDN",
 	Short: "Validate puppet certificate signing request.",
 	Long:  "Validate puppet certificate signing request in puppet auto signing ceremony.",
 	Args: func(cmd *cobra.Command, args []string) error {
-		// we need to undo the trick we setup in RootCmd
+		// Undo subcommand hack in RootCmd if necessary
 		args = fixArgs(args)
 
 		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
@@ -25,32 +23,40 @@ var validateCsrCmd = &cobra.Command{
 		}
 		return nil
 	},
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
+		args = fixArgs(args)
+		fqdn := args[0]
+
 		inputReader := cmd.InOrStdin()
 		csrPEM, err := io.ReadAll(inputReader)
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("reading CSR PEM from input: %w", err)
 		}
+
 		csrCP, err := puppet.GetChallengePassword(csrPEM)
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("extracting challenge password from CSR: %w", err)
 		}
 
-		fqdn := args[0]
-		client, err := otp.New()
+		ctx, cancel := GetCommandContext(cmd)
+		defer cancel()
+
+		s, err := store.NewDynamoDBStoreWithTableName(ctx, TableName)
 		if err != nil {
-			panic(err)
-		}
-		otp, err := client.Read(fqdn)
-		if err != nil {
-			log.Fatalf("unable to find otp token for %s", fqdn)
+			return fmt.Errorf("initializing storage client: %w", err)
 		}
 
-		if otp.Token_table_item == csrCP {
-			fmt.Println("Found otp for " + fqdn + "")
-		} else {
-			log.Fatalf("Unable to match otp token for %s", fqdn)
+		token, err := s.Read(ctx, fqdn)
+		if err != nil {
+			return fmt.Errorf("unable to find OTP token for %s: %w", fqdn, err)
 		}
+
+		if token.TokenTableItem == csrCP {
+			cmd.Printf("Found otp for %s\n", fqdn)
+			return nil
+		}
+
+		return fmt.Errorf("unable to match OTP token for %s", fqdn)
 	},
 }
 
@@ -58,8 +64,6 @@ func init() {
 	RootCmd.AddCommand(validateCsrCmd)
 }
 
-// The puppet autosign config doesnt't allow for subcommands being specified
-// we need to undo the trick we setup in RootCmd
 func fixArgs(args []string) []string {
 	if len(args) > 0 && args[0] == "validate-csr" {
 		args = args[1:]

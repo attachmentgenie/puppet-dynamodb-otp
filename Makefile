@@ -16,7 +16,7 @@ release: tag
 	goreleaser --clean
 
 watch:
-	gotestsum --watch --format testname
+	gotestsum --format testname
 lint:
 	pre-commit run --files $(shell git ls-files -m)
 test:
